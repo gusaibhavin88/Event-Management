@@ -77,7 +77,6 @@ class UserService {
       if (!passwordValidation(password)) {
         return throwError(returnMessage("auth", "invalidPassword"));
       }
-      console.log("jhjyh");
 
       const user = await User.findOne({ email: email });
       if (!user) {
@@ -89,7 +88,7 @@ class UserService {
       if (!correctPassword) {
         return throwError(returnMessage("auth", "invalidUser"));
       }
-      console.log("lllll");
+      console.log(user);
 
       const userData = await this.tokenGenerator(user);
       return userData;

@@ -24,5 +24,11 @@
     "newPassRequired": "New password is required.",
     "lastRequired": "Last name is required",
     "firstRequired": "First name is required"
+  },
+  "events": {
+    "nameRequired": "Name is required",
+    "descriptionRequired": "Description is required",
+    "start_date": "Start date  is required",
+    "end_date": "End date  is required"
   }
 }

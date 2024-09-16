@@ -2,7 +2,7 @@ const catchAsyncErrors = require("../helpers/catchAsyncError");
 const jwt = require("jsonwebtoken");
 const { throwError } = require("../helpers/errorUtil");
 const { returnMessage } = require("../utils/utils");
-const User = require("../models");
+const { User } = require("../models");
 
 exports.protect = catchAsyncErrors(async (req, res, next) => {
   const token = req.headers.authorization || req.headers.token;

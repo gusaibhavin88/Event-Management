@@ -1,13 +1,13 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 
-module.exports = (sequelize, DataTypes) => {
-  class UserDetail extends Model {
+module.exports = (sequelize) => {
+  class Event extends Model {
     static associate(models) {
       this.belongsTo(models.User, { foreignKey: "user_id" });
     }
   }
-  UserDetail.init(
+  Event.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -15,20 +15,32 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      phone: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          isNumeric: true,
-          len: [10, 15], // Optional: Phone number length validation
-        },
       },
-      address: {
+      description: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      images: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: true,
+      },
+      start_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      end_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      total_guest: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       user_id: {
-        type: DataTypes.INTEGER, // Fixed to match User model's ID type (INTEGER)
+        type: DataTypes.UUID, // Fixed to match User model's ID type (INTEGER)
         allowNull: false,
         references: {
           model: "Users", // Ensure 'Users' table name matches actual table name
@@ -39,9 +51,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "UserDetail",
+      modelName: "Event",
       timestamps: true,
     }
   );
-  return UserDetail;
+  return Event;
 };

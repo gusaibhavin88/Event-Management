@@ -30,7 +30,7 @@ sequelize
 const db = {};
 
 db.User = require("../models/user.model")(sequelize, DataTypes);
-db.UserDetail = require("../models/details.model")(sequelize, DataTypes);
+db.Event = require("../models/event.model")(sequelize, DataTypes);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

@@ -17,7 +17,7 @@
     "invalidContactNumber": "Contact number is invalid.",
     "oldAndNewPasswordSame": "New password should be different from old password.",
     "forbidden": "You are forbidden to perform this action.",
-    "registered": "User registered successfully. Please check your inbox to verify your account.",
+    "registered": "User registered successfully.",
     "passwordNotMatch": "Old password does not match.",
     "resetPassword": "Password reset successfully.",
     "emailExist": "Email already exist. please choose another email.",
@@ -29,28 +29,15 @@
     "invalidUser": "Invalid user"
   },
 
-  "admin": {
-    "adminNotFound": "Admin not found.",
-    "usersFetched": "Users fetched successfully.",
-    "skillFetched": "Skills fetched successfully.",
-    "skillExist": "Skills already exist.",
-    "statusChanges": "User status changed successfully.",
-    "userNotFound": "User does not exist.",
-    "notificationFetched": "Notification fetched successfully.",
-    "notificationRead": "Notification read successfully.",
-    "userDeleted": "User deleted successfully."
+  "event": {
+    "created": "Event created successfully",
+    "updated": "Event updated successfully",
+    "notFound": "Event not found",
+    "deleted": "Event deleted successfully",
+    "alreadyExist": "Event already exists",
+    "listFetched": "Events fetched successfully",
+    "eventFetched": "Event fetched successfully"
   },
-  "user": {
-    "skillAdded": "Skill added successfully.",
-    "skillExist": "Skill already exist.",
-    "userNotActive": "User is not active.",
-    "userActivated": "User activated.",
-    "userNotVerified": "User is not verified.",
-    "userNotFound": "User does not exist."
-  },
-  "emailTemplate": {
-    "forgotPasswordSubject": "Reset your password now.",
-    "verifyUser": "Account verification."
-  },
+
   "default": { "default": "Something went wrong." }
 }

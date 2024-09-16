@@ -1873,13 +1873,12 @@ exports.paginationObject = (paginationObject) => {
   const page = paginationObject.page || 1;
   const result_per_page = paginationObject.items_per_page || 10;
   const skip = result_per_page * (page - 1);
-  const sort_order = paginationObject.sort_order === "asc" ? 1 : -1;
-  const sortField =
-    paginationObject.sort_field && paginationObject.sort_field !== ""
-      ? paginationObject.sort_field
-      : "createdAt";
-  const sort = {};
-  sort[sortField] = sort_order;
+  const sort_by = [
+    [
+      paginationObject?.sort_field ?? "createdAt",
+      paginationObject?.sort_order ?? "asc",
+    ],
+  ];
 
-  return { page, skip, result_per_page, sort };
+  return { page, skip, result_per_page, sort_by };
 };
