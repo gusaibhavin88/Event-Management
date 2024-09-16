@@ -7,6 +7,6 @@ const api = axios.create({
   baseURL,
 });
 
-export const logInUser = (formData) => api.post("/admin/login", formData);
+export const logInUser = (formData) => api.post("/auth/login", formData);
 export const registerUser = (formData, config) =>
-  api.post("/user/signup", formData, config);
+  api.post("/auth/signup", formData, config);

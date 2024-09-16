@@ -24,9 +24,9 @@ export const signupUserAction = createAsyncThunk(
     const { onComplete, onError, formData } = functions;
 
     const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // },
     };
     try {
       const response = await registerUser(formData, config);

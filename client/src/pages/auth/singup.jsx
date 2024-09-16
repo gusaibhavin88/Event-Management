@@ -1,30 +1,31 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
-import { loginSchema } from "../../validationSchemas/logInSchema";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUserAction } from "../../Redux/Auth/AuthAction";
+import { loginUserAction, signupUserAction } from "../../Redux/Auth/AuthAction";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { signUpSchema } from "../../validationSchemas/signUpSchema";
 
-const Auth = () => {
+const Signup = () => {
   const user = useSelector((state) => state?.auth?.userData);
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
   const navigate = useNavigate();
+  const params = useParams();
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(signUpSchema),
   });
 
   const onComplete = (response) => {
     toast.success(response?.data?.message);
-    navigate("/home");
+    navigate("/signin");
   };
   const onError = (response) => {
     toast.error(response?.message);
@@ -32,7 +33,7 @@ const Auth = () => {
 
   const onSubmit = (data) => {
     dispatch(
-      loginUserAction({
+      signupUserAction({
         functions: {
           onComplete: onComplete,
           formData: data,
@@ -42,6 +43,7 @@ const Auth = () => {
     );
   };
   useEffect(() => {
+    console.log(user);
     if (user && Object.keys(user).length > 0) {
       navigate("/home");
     }
@@ -49,8 +51,23 @@ const Auth = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-gray-700">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+              placeholder="Enter your name"
+              {...register("name")}
+            />
+            {errors.name && (
+              <div className="text-red-700">{errors.name.message}</div>
+            )}
+          </div>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700">
               Email
@@ -72,7 +89,7 @@ const Auth = () => {
               Password
             </label>
             <input
-              type="text"
+              type="password"
               id="password"
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
               placeholder="Enter your password"
@@ -82,6 +99,16 @@ const Auth = () => {
               <div className="text-red-700">{errors.password.message}</div>
             )}
           </div>
+
+          <p class="text-center text-gray-700 mt-4 mb-4 text-sm">
+            Already have an account?
+            <a
+              href="/signin"
+              class="text-blue-500 font-semibold hover:underline"
+            >
+              Sign in
+            </a>
+          </p>
 
           <button
             type="submit"
@@ -95,4 +122,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default Signup;
