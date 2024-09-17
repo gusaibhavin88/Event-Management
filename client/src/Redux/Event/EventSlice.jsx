@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { listEventAction } from "./EventAction";
+import { getEventAction, listEventAction } from "./EventAction";
 
 // Define the initial state
 const initialState = {
   eventData: [],
   pageCount: null,
   loading: false,
+  event: {},
 };
 
 // Create a slice
@@ -30,6 +31,16 @@ const eventSlice = createSlice({
         state.pageCount = action?.payload?.data?.data?.page_count;
       })
       .addCase(listEventAction.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(getEventAction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getEventAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.event = action?.payload?.data?.data;
+      })
+      .addCase(getEventAction.rejected, (state, action) => {
         state.loading = false;
       });
   },

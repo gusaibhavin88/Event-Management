@@ -18,3 +18,6 @@ export const getEvents = (queryParams) => {
 export const deleteEvent = (eventId) => {
   return api.delete(`/event/${eventId}`);
 };
+export const getEvent = (eventId) => {
+  return api.get(`/event/${eventId}`);
+};

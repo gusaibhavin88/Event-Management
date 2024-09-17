@@ -16,6 +16,7 @@ import debounce from "lodash/debounce"; // Import the debounce function
 const apiUrl = import.meta.env.VITE_BASE_URL;
 import moment from "moment";
 import { deleteEventReducer } from "../../Redux/Event/EventSlice";
+import Modal from "./eventForm";
 
 const EventList = () => {
   const [page, setPage] = useState(1);
@@ -28,8 +29,10 @@ const EventList = () => {
   const [department, setDepartment] = useState("");
   const events = useSelector((state) => state?.event?.eventData);
   const eventPage = useSelector((state) => state?.event?.pageCount);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState("create");
+  const [eventData, setEventData] = useState(null);
 
-  console.log(eventPage, events);
   const dispatch = useDispatch();
   const pageOptions = [5, 10];
 
@@ -46,10 +49,6 @@ const EventList = () => {
     setPage(newPage);
   };
 
-  const handleSizePerPageChange = (size) => {
-    setSizePerPage(size);
-  };
-
   const onComplete = (response, type) => {
     if (type === "delete") toast.success(response.data.message);
   };
@@ -61,6 +60,29 @@ const EventList = () => {
     setSearchKey(val);
   };
 
+  // Model Functions
+
+  const openModal = (mode, event = null) => {
+    setModalMode(mode);
+    setEventData(event);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEventData(null);
+  };
+
+  // const handleSubmit = (data) => {
+  //   if (modalMode === "create") {
+  //     // Handle create event logic here
+  //   } else if (modalMode === "edit") {
+  //     // Handle edit event logic here
+  //   }
+  //   closeModal();
+  // };
+
+  // Delete Event
   const deleteEvent = (event_id) => {
     dispatch(
       deleteEventAction({
@@ -77,6 +99,7 @@ const EventList = () => {
     dispatch(deleteEventReducer(event_id));
   };
 
+  // List EVent
   useEffect(() => {
     dispatch(
       listEventAction({
@@ -143,10 +166,6 @@ const EventList = () => {
     return () => debouncedSearch.cancel();
   }, [searchKey]);
 
-  console.log(page == eventPage);
-  console.log(page);
-  console.log(eventPage);
-
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex justify-between mb-4">
@@ -160,9 +179,22 @@ const EventList = () => {
           placeholder="Search..."
           onChange={(e) => handleSearchInputChange(e.target.value)}
         />
-        <button className="bg-blue-400 text-white p-2 rounded-md  w-32 font-bold">
+
+        <button
+          className="bg-blue-400 text-white p-2 rounded-md  w-32 font-bold"
+          onClick={() => openModal("create")}
+        >
           Add Event
         </button>
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          mode={modalMode}
+          eventData={eventData}
+
+          // onSubmit={handleSubmit}
+        />
       </div>
 
       <div className="overflow-x-auto">
@@ -277,6 +309,12 @@ const EventList = () => {
                       : "-"}
                   </td>
                   <td className="py-2">{event.total_guest}</td>
+                  <button
+                    className="bg-blue-400 text-white p-2 rounded-md  w-16 font-bold"
+                    onClick={() => openModal("view", event?.id)}
+                  >
+                    View
+                  </button>
                   <td className="py-2">
                     <button
                       className="bg-red-500 text-white p-2 rounded-md"
