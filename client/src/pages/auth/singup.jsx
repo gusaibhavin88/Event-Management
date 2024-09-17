@@ -114,7 +114,7 @@ const Signup = () => {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
           >
-            {!loading ? "Login" : "Loading"}
+            {!loading ? "SignIn" : "Loading"}
           </button>
         </form>
       </div>

@@ -1,0 +1,255 @@
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowDown,
+  faArrowUp,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import data from "../../assets/data.json"; // Static data import
+import defaultImage from "../../assets/profileImg.webp";
+
+const UserList = () => {
+  const [page, setPage] = useState(1);
+  const [sizePerPage, setSizePerPage] = useState(5);
+  const [sortKey, setSortKey] = useState("createdAt");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [searchKey, setSearchKey] = useState("");
+  const [skillName, setSkillName] = useState("");
+  const [gender, setGender] = useState("");
+  const [department, setDepartment] = useState("");
+
+  const handleSort = (key) => {
+    if (sortKey === key) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortOrder("asc");
+    }
+  };
+
+  const handleSearchInputChange = (val) => {
+    setSearchKey(val);
+  };
+
+  const pageOptions = [5, 10]; // Options for page count dropdown
+
+  return (
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-between mb-4">
+        <h3 className="text-lg font-bold">Users</h3>
+      </div>
+
+      <div className="flex flex-wrap justify-between gap-4 mb-6">
+        <input
+          type="text"
+          className="w-full md:w-1/4 p-2 border border-gray-300 rounded-md"
+          placeholder="Search..."
+          onChange={(e) => handleSearchInputChange(e.target.value)}
+        />
+
+        <select
+          className="w-full md:w-1/4 p-2 border border-gray-300 rounded-md"
+          onChange={(e) =>
+            setSkillName(
+              e.target.value === "Select Skill (All)" ? "" : e.target.value
+            )
+          }
+        >
+          <option>Select Skill (All)</option>
+          {data.skills?.map((skill, index) => (
+            <option key={index} value={skill.value}>
+              {skill.label}
+            </option>
+          ))}
+        </select>
+
+        <select
+          className="w-full md:w-1/4 p-2 border border-gray-300 rounded-md"
+          onChange={(e) =>
+            setGender(
+              e.target.value === "Select Gender (All)" ? "" : e.target.value
+            )
+          }
+        >
+          <option>Select Gender (All)</option>
+          {data?.gender?.map((gender, index) => (
+            <option key={index} value={gender}>
+              {gender}
+            </option>
+          ))}
+        </select>
+
+        <select
+          className="w-full md:w-1/4 p-2 border border-gray-300 rounded-md"
+          onChange={(e) =>
+            setDepartment(
+              e.target.value === "Select Department (All)" ? "" : e.target.value
+            )
+          }
+        >
+          <option>Select Department (All)</option>
+          {data?.departments?.map((department, index) => (
+            <option key={index} value={department}>
+              {department}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white">
+          <thead>
+            <tr className="w-full border-b">
+              <th
+                className="py-2 text-left cursor-pointer"
+                onClick={() => handleSort("profile_image")}
+              >
+                Profile
+                {sortKey === "profile_image" && (
+                  <span className="ml-1">
+                    {sortOrder === "asc" ? (
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowDown} />
+                    )}
+                  </span>
+                )}
+              </th>
+              <th
+                className="py-2 text-left cursor-pointer"
+                onClick={() => handleSort("first_name")}
+              >
+                Name
+                {sortKey === "first_name" && (
+                  <span className="ml-1">
+                    {sortOrder === "asc" ? (
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowDown} />
+                    )}
+                  </span>
+                )}
+              </th>
+              <th
+                className="py-2 text-left cursor-pointer"
+                onClick={() => handleSort("email")}
+              >
+                Email
+                {sortKey === "email" && (
+                  <span className="ml-1">
+                    {sortOrder === "asc" ? (
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowDown} />
+                    )}
+                  </span>
+                )}
+              </th>
+              <th
+                className="py-2 text-left cursor-pointer"
+                onClick={() => handleSort("contact_number")}
+              >
+                Contact Number
+                {sortKey === "contact_number" && (
+                  <span className="ml-1">
+                    {sortOrder === "asc" ? (
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowDown} />
+                    )}
+                  </span>
+                )}
+              </th>
+              <th
+                className="py-2 text-left cursor-pointer"
+                onClick={() => handleSort("department")}
+              >
+                Department
+                {sortKey === "department" && (
+                  <span className="ml-1">
+                    {sortOrder === "asc" ? (
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowDown} />
+                    )}
+                  </span>
+                )}
+              </th>
+              <th
+                className="py-2 text-left cursor-pointer"
+                onClick={() => handleSort("gender")}
+              >
+                Gender
+                {sortKey === "gender" && (
+                  <span className="ml-1">
+                    {sortOrder === "asc" ? (
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowDown} />
+                    )}
+                  </span>
+                )}
+              </th>
+              <th className="py-2 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.users?.map((user, index) => (
+              <tr key={index} className="border-b">
+                <td className="py-2">
+                  <img
+                    src={user.profile_image || defaultImage}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full"
+                  />
+                </td>
+                <td className="py-2">{user.first_name}</td>
+                <td className="py-2">{user.email}</td>
+                <td className="py-2">{user.contact_number}</td>
+                <td className="py-2">{user.department}</td>
+                <td className="py-2">{user.gender}</td>
+                <td className="py-2">
+                  <button className="bg-red-500 text-white p-2 rounded-md">
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex justify-between mt-4">
+        <select
+          className="p-2 border border-gray-300 rounded-md"
+          onChange={(e) => setSizePerPage(e.target.value)}
+        >
+          {pageOptions.map((option, index) => (
+            <option key={index} value={option}>
+              {option} per page
+            </option>
+          ))}
+        </select>
+
+        <div className="flex space-x-2">
+          <button
+            className="p-2 bg-gray-300 rounded-md"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Prev
+          </button>
+          <span className="p-2">{page}</span>
+          <button
+            className="p-2 bg-gray-300 rounded-md"
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserList;

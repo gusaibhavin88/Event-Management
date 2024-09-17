@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css"; // Import the CSS
 import RedirectPage from "./pages/auth/redirectPage";
 import Login from "./pages/auth/login";
 import Signup from "./pages/auth/singup";
+import EventList from "./components/users/eventList";
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
             <Route exact path="/signup" element={<Signup />} />
             <Route element={<PrivateRoute />}>
               <Route exact path="/home" element={<Home />} />
+            </Route>
+            <Route element={<PrivateRoute />}>
+              <Route exact path="/events" element={<EventList />} />
             </Route>
             <Route element={<PrivateRoute />}>
               <Route exact path="/" element={<RedirectPage />} />
