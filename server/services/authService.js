@@ -12,6 +12,7 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const sendEmail = require("../helpers/sendEmail");
 const { User } = require("../models");
+const { where } = require("sequelize");
 
 class UserService {
   tokenGenerator = async (payload) => {
@@ -38,6 +39,8 @@ class UserService {
     try {
       const { email, password, name } = payload;
 
+      console.log(email, "khhhh");
+
       if (!validateEmail(email)) {
         return throwError(returnMessage("auth", "invalidEmail"));
       }
@@ -46,7 +49,8 @@ class UserService {
         return throwError(returnMessage("auth", "invalidPassword"));
       }
 
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ where: { email: email } });
+      console.log(user, "kkkkkkkkk");
       if (user) {
         return throwError(returnMessage("auth", "emailExist"));
       }

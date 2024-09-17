@@ -129,7 +129,16 @@ class EventService {
         order: pagination?.sort_by,
         raw: true,
       });
-      return events;
+
+      // Get total count of matching events
+      const total_count = await Event.count({
+        where: whereClause,
+      });
+
+      // Calculate total pages
+      const page_count = Math.ceil(total_count / pagination.result_per_page);
+
+      return { events, page_count };
     } catch (error) {
       logger.error(`Error while delete Event: ${error}`);
       return throwError(error?.message, error?.statusCode);
