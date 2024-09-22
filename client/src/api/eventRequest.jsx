@@ -21,3 +21,9 @@ export const deleteEvent = (eventId) => {
 export const getEvent = (eventId) => {
   return api.get(`/event/${eventId}`);
 };
+export const createEvent = (formData, config) => {
+  return api.post("/event/add", formData, config);
+};
+export const updateEvent = (formData, eventId, config) => {
+  return api.put(`/event/update/${eventId}`, formData, config);
+};

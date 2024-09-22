@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getEventAction, listEventAction } from "./EventAction";
+import {
+  getEventAction,
+  listEventAction,
+  updateEventAction,
+} from "./EventAction";
 
 // Define the initial state
 const initialState = {
@@ -17,6 +21,15 @@ const eventSlice = createSlice({
     deleteEventReducer: (state, action) => {
       const event_id = action.payload;
       state.eventData = state.eventData.filter((item) => item.id !== event_id);
+    },
+    updateEventReducer: (state, action) => {
+      const updatedEvent = action.payload;
+      state.eventData = state.eventData.map((item) =>
+        item.id === updatedEvent.id ? updatedEvent : item
+      );
+    },
+    clearEvent: (state, action) => {
+      state.event = {};
     },
   },
   extraReducers: (builder) => {
@@ -42,9 +55,19 @@ const eventSlice = createSlice({
       })
       .addCase(getEventAction.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(updateEventAction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateEventAction.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateEventAction.rejected, (state, action) => {
+        state.loading = false;
       });
   },
 });
 
 export default eventSlice.reducer;
-export const { deleteEventReducer } = eventSlice.actions;
+export const { deleteEventReducer, updateEventReducer, clearEvent } =
+  eventSlice.actions;

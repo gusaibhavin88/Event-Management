@@ -73,15 +73,6 @@ const EventList = () => {
     setEventData(null);
   };
 
-  // const handleSubmit = (data) => {
-  //   if (modalMode === "create") {
-  //     // Handle create event logic here
-  //   } else if (modalMode === "edit") {
-  //     // Handle edit event logic here
-  //   }
-  //   closeModal();
-  // };
-
   // Delete Event
   const deleteEvent = (event_id) => {
     dispatch(
@@ -186,15 +177,14 @@ const EventList = () => {
         >
           Add Event
         </button>
-
-        <Modal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          mode={modalMode}
-          eventData={eventData}
-
-          // onSubmit={handleSubmit}
-        />
+        {isModalOpen && (
+          <Modal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            mode={modalMode}
+            eventData={eventData}
+          />
+        )}
       </div>
 
       <div className="overflow-x-auto">
@@ -309,15 +299,26 @@ const EventList = () => {
                       : "-"}
                   </td>
                   <td className="py-2">{event.total_guest}</td>
-                  <button
-                    className="bg-blue-400 text-white p-2 rounded-md  w-16 font-bold"
-                    onClick={() => openModal("view", event?.id)}
-                  >
-                    View
-                  </button>
                   <td className="py-2">
                     <button
-                      className="bg-red-500 text-white p-2 rounded-md"
+                      className="bg-blue-400 text-white py-2 rounded-md   m w-16 font-bold"
+                      onClick={() => openModal("view", event?.id)}
+                    >
+                      View
+                    </button>
+                  </td>
+                  <td className="py-2   ">
+                    <button
+                      className="bg-blue-400 text-white py-2  rounded-md  ml-3 w-16 font-bold"
+                      onClick={() => openModal("edit", event?.id)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+
+                  <td className="py-2">
+                    <button
+                      className="bg-red-500 text-white p-2   w-12 rounded-md"
                       onClick={() => deleteEvent(event?.id)}
                     >
                       <FontAwesomeIcon icon={faTrash} />
