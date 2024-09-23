@@ -6,7 +6,7 @@ import {
   getEvents,
   updateEvent,
 } from "../../api/eventRequest";
-import { updateEventReducer } from "./EventSlice";
+import { addEvent, updateEventReducer } from "./EventSlice";
 
 // List Events
 export const listEventAction = createAsyncThunk(
@@ -66,6 +66,7 @@ export const createEventAction = createAsyncThunk(
         headers: { "Content-Type": "multipart/form-data" },
       };
       const response = await createEvent(formData, config);
+      dispatch(addEvent(response));
       onComplete(response);
       return response;
     } catch (error) {

@@ -13,6 +13,9 @@ import {
 import { toast } from "react-toastify";
 import moment from "moment";
 import { clearEvent } from "../../Redux/Event/EventSlice";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const Modal = ({ isOpen, onClose, mode, eventData }) => {
@@ -38,6 +41,15 @@ const Modal = ({ isOpen, onClose, mode, eventData }) => {
   const handleClose = () => {
     onClose();
     reset(); // Reset form on close
+  };
+
+  const removeImage = (image, action) => {
+    if (action === "new") {
+      const filteredImages = imagePreview.filter((img) => img !== image);
+      setImagePreview([...filteredImages]);
+    }
+    const filteredImages = imageNames.filter((img) => img !== image);
+    setImageNames(filteredImages);
   };
 
   const onComplete = (response, action) => {
@@ -94,8 +106,6 @@ const Modal = ({ isOpen, onClose, mode, eventData }) => {
         form_data.append("event_images", file);
       });
 
-    console.log(form_data);
-
     if (mode === "edit") {
       dispatch(
         updateEventAction({
@@ -131,18 +141,23 @@ const Modal = ({ isOpen, onClose, mode, eventData }) => {
 
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
+    // Create an array of image URLs to preview
 
-    if (e.target.files && e.target.files[0]) {
-      e.target.files.forEach((img) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          if (reader.readyState === 2) {
-            setImagePreview([...imagePreview, reader.result]);
-          }
-        };
-        reader.readAsDataURL(img);
-      });
-    }
+    const files = Array.from(e.target.files);
+    const imageUrls = files.map((file) => URL.createObjectURL(file));
+
+    setImagePreview([...imagePreview, ...imageUrls]);
+    // if (e.target.files && e.target.files[0]) {
+    //   e.target.files.forEach((img) => {
+    //     const reader = new FileReader();
+    //     reader.onload = () => {
+    //       if (reader.readyState === 2) {
+    //         setImagePreview([...imagePreview, reader.result]);
+    //       }
+    //     };
+    //     reader.readAsDataURL(img);
+    //   });
+    // }
   };
 
   return (
@@ -270,13 +285,23 @@ const Modal = ({ isOpen, onClose, mode, eventData }) => {
                 <>
                   {imageNames.map((image, index) => (
                     <div key={index} className="text-gray-700">
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        className="cursor-pointer    text-red-500"
+                        onClick={() => removeImage(image)}
+                      />
                       <img className="w-10" src={`${apiUrl}/${image}`} />
                     </div>
                   ))}
 
                   {imagePreview.map((image, index) => (
                     <div key={index} className="text-gray-700">
-                      <img className="w-10" src={`${apiUrl}/${image}`} />
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        className="cursor-pointer    text-red-500"
+                        onClick={() => removeImage(image, "new")}
+                      />
+                      <img className="w-10" src={imagePreview} />
                     </div>
                   ))}
                 </>
@@ -288,6 +313,7 @@ const Modal = ({ isOpen, onClose, mode, eventData }) => {
               <input
                 id="images"
                 type="file"
+                accept="image/*"
                 multiple
                 onChange={handleFileChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"

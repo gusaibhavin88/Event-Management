@@ -17,6 +17,8 @@ const apiUrl = import.meta.env.VITE_BASE_URL;
 import moment from "moment";
 import { deleteEventReducer } from "../../Redux/Event/EventSlice";
 import Modal from "./eventForm";
+import { useTranslation } from "react-i18next";
+import { changeLanguage } from "../../utility/comonFunction";
 
 const EventList = () => {
   const [page, setPage] = useState(1);
@@ -32,6 +34,7 @@ const EventList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create");
   const [eventData, setEventData] = useState(null);
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const pageOptions = [5, 10];
@@ -160,7 +163,13 @@ const EventList = () => {
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex justify-between mb-4">
-        <h3 className="text-lg font-bold">Events</h3>
+        <h3 className="text-lg font-bold">{t("EventTitle")}</h3>
+        <button
+          className="bg-blue-400 text-white p-2 rounded-md  w-50 font-bold"
+          onClick={() => changeLanguage("hn")}
+        >
+          Change Language
+        </button>
       </div>
 
       <div className="flex flex-wrap justify-between gap-4 mb-6">

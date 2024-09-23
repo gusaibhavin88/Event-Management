@@ -18,6 +18,9 @@ const eventSlice = createSlice({
   name: "event",
   initialState,
   reducers: {
+    addEvent: (state, action) => {
+      state.eventData = [action?.payload?.data?.data, ...state.eventData];
+    },
     deleteEventReducer: (state, action) => {
       const event_id = action.payload;
       state.eventData = state.eventData.filter((item) => item.id !== event_id);
@@ -69,5 +72,5 @@ const eventSlice = createSlice({
 });
 
 export default eventSlice.reducer;
-export const { deleteEventReducer, updateEventReducer, clearEvent } =
+export const { deleteEventReducer, updateEventReducer, clearEvent, addEvent } =
   eventSlice.actions;
